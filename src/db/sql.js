@@ -22,8 +22,6 @@ const UNLIKE_ARTICLE = `delete from likes where user = ? and article = ?;`;
 
 module.exports = {
     SELECT_USER,
-    CREATE_TABLE,
-    INSERT_ARTICLE,
     SELECT_ARTICLE,
     LIST_ARTICLE,
     NEW_ARTICLE,
