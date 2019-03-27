@@ -17,5 +17,7 @@ router.post('/like', handlers.likeAction);
 router.get('/likes/:id', handlers.likeActivity);
 router.get('/following/:id', handlers.getFollowingList);
 router.get('/follower/:id', handlers.getFollowerList);
-
+router.post('/follow', handlers.follow);
+router.post('/unfollow', handlers.unfollow);
+router.post('/checklike', handlers.checkLike);
 module.exports = router;

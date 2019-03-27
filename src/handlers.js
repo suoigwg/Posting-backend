@@ -37,6 +37,22 @@ function addNewArticle(req, res, next) {
     });
 }
 
+function follow(req, res, next) {
+    const {follower, following} = req.body;
+    api.follow(follower, following).then((data) => {
+        console.log(data);
+        res.json(data);
+    });
+}
+
+function unfollow(req, res, next) {
+    const {follower, following} = req.body;
+    api.unfollow(follower, following).then((data) => {
+        console.log(data);
+        res.json(data);
+    });
+}
+
 function updateArticle(req, res, next) {
     api.updateArticle(req.params.id, req.body).then(
         data => res.json({'status': 200})
@@ -122,6 +138,17 @@ function getFollowingList(req, res, next) {
     }).catch(() => console.log("获取关注信息失败"))
 }
 
+function checkLike(req, res, next) {
+    const {user, article} = req.body;
+    api.ifUserlikeArticle(user, article).then((data) => {
+        if (data && data.length > 0) {
+            res.json({"like": true});
+        } else
+            res.json({"like": false});
+
+    }).catch(() => console.log("获取关注信息失败"))
+}
+
 module.exports = {
     listArticle,
     getArticleById,
@@ -136,5 +163,8 @@ module.exports = {
     recommendAuthor,
     likeAction,
     getFollowerList,
-    getFollowingList
+    getFollowingList,
+    follow,
+    unfollow,
+    checkLike
 };

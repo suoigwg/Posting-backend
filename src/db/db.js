@@ -221,7 +221,7 @@ function likeArticle(user, article, action) {
                 if (err) reject(err);
                 else resolve();
             })
-        } else {
+        } else if (action === 'unlike') {
             db.run(sqlStmt.UNLIKE_ARTICLE, [user, article], (err) => {
                 if (err) reject(err);
                 else resolve();
@@ -259,6 +259,30 @@ function selectAll(sql, param) {
     return promise;
 }
 
+function runQuery(sql, param) {
+    const promise = new Promise((resolve, reject) => (
+        db.run(sql, param, (err) => {
+            if (err) {
+                reject(err);
+            }
+            resolve("success");
+        })
+    ));
+    return promise;
+}
+
+function ifUserlikeArticle(user, article) {
+    return selectAll(sqlStmt.SELECT_USER_LIKE, [user, article]);
+}
+
+function follow(follower, following) {
+    return runQuery(sqlStmt.INSERT_FOLLOW, [follower, following]);
+}
+
+function unfollow(follower, following) {
+    return runQuery(sqlStmt.UNFOLLOW, [follower, following]);
+}
+
 function getFollowerList(userid) {
     return selectAll(sqlStmt.SELECT_FOLLOWER_LIST, [userid]);
 }
@@ -286,5 +310,8 @@ module.exports = {
     likeArticle,
     selectAuthor,
     getFollowerList,
-    getFollowingList
+    getFollowingList,
+    follow,
+    unfollow,
+    ifUserlikeArticle
 };
