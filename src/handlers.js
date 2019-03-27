@@ -101,6 +101,27 @@ function likeAction(req, res, next) {
     }).catch(() => console.log("修改点赞信息失败"))
 }
 
+function recommendAuthor(req, res, next) {
+    const {limit} = req.query;
+    api.selectAuthor(limit).then((data) => res.json(data))
+        .catch("获取推荐用户失败");
+}
+
+function getFollowerList(req, res, next) {
+    const userid = req.params.id;
+    api.getFollowerList(userid).then((data) => {
+        res.json(data);
+    }).catch(() => console.log("获取粉丝信息失败"))
+}
+
+
+function getFollowingList(req, res, next) {
+    const userid = req.params.id;
+    api.getFollowingList(userid).then((data) => {
+        res.json(data);
+    }).catch(() => console.log("获取关注信息失败"))
+}
+
 module.exports = {
     listArticle,
     getArticleById,
@@ -112,5 +133,8 @@ module.exports = {
     profileHandler,
     publish,
     likeActivity,
-    likeAction
+    recommendAuthor,
+    likeAction,
+    getFollowerList,
+    getFollowingList
 };

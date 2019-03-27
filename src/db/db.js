@@ -231,6 +231,42 @@ function likeArticle(user, article, action) {
     return promise;
 }
 
+function selectAuthor(limit = 5) {
+    const promise = new Promise((resolve, reject) => {
+        db.all(sqlStmt.SELECT_AUTHOR, limit, (err, rows) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(rows);
+        })
+    });
+    return promise;
+}
+
+function selectAll(sql, param) {
+    const promise = new Promise((resolve, reject) => {
+        db.all(sql, param, (err, rows) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+
+    });
+    return promise;
+}
+
+function getFollowerList(userid) {
+    return selectAll(sqlStmt.SELECT_FOLLOWER_LIST, [userid]);
+}
+
+function getFollowingList(userid) {
+    return selectAll(sqlStmt.SELECT_FOLLOWING_LIST, [userid]);
+}
+
 module.exports = {
     db,
     checkCredential,
@@ -247,5 +283,8 @@ module.exports = {
     getUserByID,
     getRecentPublish,
     getRecentLikes,
-    likeArticle
+    likeArticle,
+    selectAuthor,
+    getFollowerList,
+    getFollowingList
 };

@@ -1,3 +1,4 @@
+const SELECT_AUTHOR = `select * from user limit ?;`;
 const SELECT_USER = `SELECT * FROM user WHERE username = ? AND password = ?`;
 const SELECT_ARTICLE = `SELECT * FROM article WHERE id = ?`;
 const LIST_ARTICLE = `SELECT * FROM article order by timestamp desc LIMIT ? OFFSET ?`;
@@ -19,8 +20,14 @@ const SELECT_PUBLISH = `select * from article where author = ? order by timestam
 const SELECT_RECENT_LIKE = `select * from article where id in (select article from likes where user = ?) order by timestamp desc limit 10;`;
 const LIKE_ARTICLE = `insert into likes values (?, ?, ?);`;
 const UNLIKE_ARTICLE = `delete from likes where user = ? and article = ?;`;
+const SELECT_FOLLOWER_LIST = `SELECT *  FROM user where id in (select follower as id from follow where following=?)`;
+const SELECT_FOLLOWING_LIST = `SELECT *  FROM user where id in (select following as id from follow where follower=?);`;
+
 
 module.exports = {
+    SELECT_FOLLOWER_LIST,
+    SELECT_FOLLOWING_LIST,
+    SELECT_AUTHOR,
     SELECT_USER,
     SELECT_ARTICLE,
     LIST_ARTICLE,
