@@ -59,6 +59,7 @@ function loginHandle(req, res, next) {
     api.checkCredential(req.body.username, req.body.password).then(
         data => {
             req.session.user = data;
+            delete data['password'];
             res.json(data);
         }
     ).catch((err) => {
