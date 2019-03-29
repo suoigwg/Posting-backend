@@ -22,7 +22,6 @@ function getArticleList(page = 1, pageSize = 5) {
     let stmt = db.prepare(sqlStmt.LIST_ARTICLE);
     const promise = new Promise(((resolve, reject) => {
         stmt.all(pageSize, (page - 1) * pageSize, (err, row) => {
-            console.log(row);
             if (err) {
                 reject(err);
                 console.log(err);
@@ -37,7 +36,6 @@ function getArticleList(page = 1, pageSize = 5) {
 
 function createNewArticle(data) {
     let stmt = db.prepare(sqlStmt.NEW_ARTICLE);
-    console.log(data);
     const promise = new Promise((resolve, reject) => (
         stmt.run(data.title, data.content, Date.now(), data.author, (err) => {
             if (err) reject(err);
@@ -71,7 +69,6 @@ function getArticle(id) {
 }
 
 function deleteArticle(id) {
-    console.log(id);
     const promise = new Promise((resolve, reject) => (
         db.run(sqlStmt.DELETE_ARTICLE, id, (err) => {
             if (err) {
@@ -170,7 +167,6 @@ function countWordByID(userid) {
                 reject(err);
                 return;
             }
-            console.log(rows);
             let wordCount = 0;
             for (let row of rows) {
                 for (let key in row) {

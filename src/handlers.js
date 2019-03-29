@@ -1,26 +1,18 @@
 const api = require('./db/db');
-const uuid = require('uuid');
-const DAY = 1000 * 60 * 60 * 24;
-const SESSION = new Map();
-
-function authenticate(req) {
-    if (SESSION.has(req.cookies.userid) && Date.now() - SESSION.get(req.cookies.userid) <= DAY) {
-        return true;
-    }
-    return false;
-}
 
 function listArticle(req, res, next) {
     const {page = 1, pageSize = 5} = req.query;
     api.getArticleList(page, pageSize).then((data) => {
-            res.json(data)
+        res.data = data;
+        next();
         }
     );
 }
 
 function getArticleById(req, res, next) {
     api.getArticle(req.params.id).then((data) => {
-        res.json(data)
+        res.data = [data];
+        next();
     });
 }
 
@@ -32,15 +24,13 @@ function deleteArticleById(req, res, next) {
 
 function addNewArticle(req, res, next) {
     api.createNewArticle(req.body).then((data) => {
-        console.log(data);
-        res.json(data);
+        res.send(data);
     });
 }
 
 function follow(req, res, next) {
     const {follower, following} = req.body;
     api.follow(follower, following).then((data) => {
-        console.log(data);
         res.json(data);
     });
 }
@@ -68,12 +58,7 @@ function searchArticle(req, res, next) {
 function loginHandle(req, res, next) {
     api.checkCredential(req.body.username, req.body.password).then(
         data => {
-            const userUuid = uuid.v4();
-            SESSION.set(userUuid, Date.now());
-            res.cookie("userid", userUuid, {
-                expires: new Date(Date.now() + DAY),
-                httpOnly: true
-            });
+            req.session.user = data;
             res.json(data);
         }
     ).catch((err) => {
@@ -99,7 +84,8 @@ function profileHandler(req, res, next) {
 function publish(req, res, next) {
     const userid = req.params.id;
     api.getRecentPublish(userid).then((data) => {
-        res.json(data);
+        res.data = data;
+        next();
     }).catch(() => console.log("获取发表文章信息失败"))
 }
 
