@@ -5,6 +5,7 @@ let handlers = require('../src/handlers');
 router.get('/', function (req, res, next) {
     res.render('index', {title: 'Express'});
 });
+
 router.get('/users', handlers.recommendAuthor);
 router.get('/article/list', handlers.listArticle);
 router.post('/article/new', handlers.addNewArticle);
@@ -20,4 +21,5 @@ router.get('/follower/:id', handlers.getFollowerList);
 router.post('/follow', handlers.follow);
 router.post('/unfollow', handlers.unfollow);
 router.post('/checklike', handlers.checkLike);
+router.get('/search/:keyword', handlers.searchArticle);
 module.exports = router;

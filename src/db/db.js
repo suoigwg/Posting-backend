@@ -275,6 +275,7 @@ function ifUserlikeArticle(user, article) {
     return selectAll(sqlStmt.SELECT_USER_LIKE, [user, article]);
 }
 
+
 function follow(follower, following) {
     return runQuery(sqlStmt.INSERT_FOLLOW, [follower, following]);
 }
@@ -313,5 +314,6 @@ module.exports = {
     getFollowingList,
     follow,
     unfollow,
-    ifUserlikeArticle
+    ifUserlikeArticle,
+
 };
