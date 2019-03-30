@@ -7,7 +7,7 @@ var middlewares = require('../src/middlewares');
 router.get('/users', handlers.recommendAuthor);
 router.get('/article/list', handlers.listArticle, middlewares.addSummary);
 router.post('/article/new', middlewares.authenticate, handlers.addNewArticle);
-router.get('/article/delete/:id', handlers.deleteArticleById);
+router.delete('/article/delete/:id', middlewares.authenticate, handlers.deleteArticleById);
 router.get('/article/:id', handlers.getArticleById, middlewares.addSummary);
 router.post('/login', handlers.loginHandle);
 router.get('/user/:id', handlers.profileHandler);
@@ -20,6 +20,5 @@ router.post('/follow', handlers.follow);
 router.post('/unfollow', handlers.unfollow);
 router.post('/checklike', handlers.checkLike);
 router.get('/search/:keyword', handlers.searchArticle);
-
 
 module.exports = router;
